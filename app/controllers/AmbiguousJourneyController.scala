@@ -208,20 +208,21 @@ class AmbiguousJourneyController @Inject() (
     enforceAmbiguousUser { saUtr =>
 
       val currentTaxYear = TaxYearResolver.currentTaxYear
-      val deadlineYear = currentTaxYear + 1
       val showSendTaxReturnByPost = DateTimeTools.showSendTaxReturnByPost(DateTime.now())
 
       Future.successful {
         page match {
           case "need-to-enrol" => Ok(views.html.ambiguousjourney.youNeedToEnrol(saUtr,
-            continueUrl, deadlineYear.toString, currentTaxYear.toString, showSendTaxReturnByPost))
+            continueUrl, currentTaxYear, showSendTaxReturnByPost))
           case "need-to-enrol-again" => Ok(views.html.ambiguousjourney.youNeedToEnrolAgain(saUtr,
-            continueUrl, deadlineYear.toString, currentTaxYear.toString, showSendTaxReturnByPost))
+            continueUrl, currentTaxYear, showSendTaxReturnByPost))
           case "need-to-use-created-creds" => Ok(views.html.ambiguousjourney.youNeedToUseCreatedCreds(saUtr, continueUrl))
           case "deadline" => Ok(views.html.ambiguousjourney.deadlineIs(saUtr, continueUrl))
           case "letter-in-post" => Ok(views.html.ambiguousjourney.letterMayBeInPost(saUtr, continueUrl))
-          case "wrong-account" => Ok(views.html.ambiguousjourney.wrongAccount(saUtr, continueUrl, routes.AmbiguousJourneyController.usedUtrToEnrolChoice()))
-          case "pin-expired-register" => Ok(views.html.ambiguousjourney.wrongAccount(saUtr, continueUrl, routes.AmbiguousJourneyController.usedUtrToRegisterChoice()))
+          case "wrong-account" => Ok(views.html.ambiguousjourney.wrongAccount(saUtr,
+            continueUrl, routes.AmbiguousJourneyController.usedUtrToEnrolChoice()))
+          case "pin-expired-register" => Ok(views.html.ambiguousjourney.wrongAccount(saUtr,
+            continueUrl, routes.AmbiguousJourneyController.usedUtrToRegisterChoice()))
           case _ => Ok(views.html.selfAssessmentNotShown(saUtr))
         }
       }

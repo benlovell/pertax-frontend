@@ -16,8 +16,7 @@
 
 @(utr: SaUtr,
   continueUrl: String,
-  deadlineYear: String,
-  currentTaxYear: String,
+  currentTaxYear: Int,
   showPostLink: Boolean)(implicit pertaxContext: PertaxContext, messages: play.api.i18n.Messages)
 
 @import pertaxContext.configDecorator._
@@ -56,9 +55,9 @@
     <div class="column-two-thirds">
       <div class="grid-row pertax-panel">
         <h2>@Messages("label.do_your_tax_return_before_the_deadline")</h2>
-        <p>@Messages("label.the_deadline_to_do_your_tax_return_online_is_", deadlineYear)</p>
+        <p>@Messages("label.the_deadline_to_do_your_tax_return_online_is_", (currentTaxYear+1).toString)</p>
         @if(showPostLink) {
-          <p>@Html(Messages("label.you_can_send_your_tax_return_by_post_", pertaxContext.configDecorator.selfAssessmentEnrolUrl, currentTaxYear))</p>
+          <p>@Html(Messages("label.you_can_send_your_tax_return_by_post_", pertaxContext.configDecorator.selfAssessmentEnrolUrl, currentTaxYear.toString))</p>
         }
       </div>
     </div>
